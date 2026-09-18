@@ -1,0 +1,1136 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Як скласти AWS Cloud Practitioner</title>
+<meta name="description" content="Досвід і поради з підготовки до сертифікації AWS Certified Cloud Practitioner (CLF-C02)">
+<style>
+:root {
+  --bg: #0f1419;
+  --surface: #182029;
+  --surface-2: #232d39;
+  --border: #2f3b49;
+  --text: #e8edf2;
+  --muted: #98a5b3;
+  --accent: #ff9900;
+  --accent-soft: rgba(255, 153, 0, .14);
+  --font: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+  --topbar-h: 52px;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font: 17px/1.65 var(--font);
+}
+a { color: var(--accent); text-underline-offset: 3px; }
+a:hover { text-decoration-thickness: 2px; }
+code, .svc { font-family: var(--mono); color: var(--accent); font-size: .95em; }
+button { font: inherit; color: inherit; cursor: pointer; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+/* ---------- SVG illustration palette ---------- */
+.illo { display: block; width: 100%; height: auto; color: var(--text); }
+.ln { fill: none; stroke: currentColor; stroke-width: 5; stroke-linecap: round; stroke-linejoin: round; }
+.ln-thin { fill: none; stroke: currentColor; stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; }
+.ln-acc { fill: none; stroke: var(--accent); stroke-width: 3; stroke-linecap: round; }
+.ln-muted { fill: none; stroke: var(--muted); stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round; }
+.f-acc { fill: var(--accent); }
+.f-surf { fill: var(--surface-2); stroke: currentColor; stroke-width: 3; stroke-linejoin: round; }
+.f-stone { fill: var(--surface-2); stroke: var(--muted); stroke-width: 3; stroke-linejoin: round; }
+.f-bg { fill: var(--bg); }
+.f-text { fill: currentColor; }
+.px-grid { stroke: var(--surface); stroke-width: 2; fill: none; }
+.illo text { fill: currentColor; font-family: var(--font); font-weight: 600; }
+.illo text.mono { font-family: var(--mono); }
+.illo text.muted { fill: var(--muted); }
+
+/* ---------- Top bar ---------- */
+.topbar {
+  position: sticky; top: 0; z-index: 20;
+  height: var(--topbar-h);
+  display: flex; align-items: center; justify-content: space-between; gap: 12px;
+  padding: 0 20px;
+  background: rgba(15, 20, 25, .92);
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid var(--border);
+}
+.topbar-title { font-weight: 650; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.topbar-title span { color: var(--accent); }
+.btn {
+  border: 1px solid var(--border); background: var(--surface-2);
+  border-radius: 8px; padding: 6px 14px; white-space: nowrap;
+}
+.btn:hover { border-color: var(--accent); }
+.btn-primary { background: var(--accent); border-color: var(--accent); color: #111; font-weight: 650; }
+.btn-primary:hover { filter: brightness(1.08); }
+.no-js .js-only { display: none; }
+
+/* ---------- Scroll mode layout ---------- */
+.layout { max-width: 1180px; margin: 0 auto; padding: 0 20px 96px; }
+.toc { padding: 20px 0 0; font-size: 15px; }
+.toc-label { color: var(--muted); text-transform: uppercase; letter-spacing: .08em; font-size: 12px; margin: 0 0 8px; }
+.toc ol { list-style: none; margin: 0; padding: 0; }
+.toc ol ol { padding-left: 14px; border-left: 1px solid var(--border); margin: 2px 0 6px 4px; }
+.toc a { display: block; padding: 3px 8px; border-radius: 6px; color: var(--muted); text-decoration: none; }
+.toc a:hover { color: var(--text); }
+.toc a.is-current { color: var(--accent); background: var(--accent-soft); }
+
+#deck { min-width: 0; max-width: 46rem; }
+.article-head { padding: 40px 0 8px; }
+.article-head h1 { font-size: clamp(30px, 5vw, 44px); line-height: 1.15; margin: 0 0 12px; }
+.article-head p { color: var(--muted); margin: 0; }
+.kbd-hint { margin-top: 14px !important; font-size: 14px; }
+kbd {
+  font: 12px var(--mono); padding: 2px 6px; border-radius: 5px;
+  border: 1px solid var(--border); background: var(--surface-2); color: var(--text);
+}
+
+.slides-only { display: none; }
+.slide, .group { scroll-margin-top: calc(var(--topbar-h) + 16px); }
+.slide { padding-top: 12px; }
+.brief { display: none; }
+
+.group, .title { line-height: 1.25; position: relative; }
+h2.group, h2.title { font-size: 28px; margin: 48px 0 14px; padding-top: 28px; border-top: 1px solid var(--border); }
+h3.title { font-size: 21px; margin: 32px 0 10px; }
+h4.title { font-size: 18px; margin: 26px 0 8px; }
+h4.title .svc { font-size: 1em; }
+.anchor {
+  position: absolute; right: 100%; padding-right: 8px;
+  color: var(--muted); text-decoration: none; opacity: 0; transition: opacity .15s;
+}
+.title:hover .anchor, .anchor:focus-visible, .anchor.is-copied { opacity: 1; }
+.anchor.is-copied::after {
+  content: "скопійовано"; position: absolute; left: 0; top: -1.6em;
+  font: 12px var(--font); color: var(--accent); white-space: nowrap;
+}
+
+.full ul, .full ol { padding-left: 1.3em; margin: 10px 0; }
+.full li { margin: 7px 0; }
+.full li::marker { color: var(--accent); }
+.full p { margin: 10px 0; }
+.full blockquote {
+  margin: 12px 0; padding: 8px 14px; border-left: 3px solid var(--accent);
+  background: var(--surface); border-radius: 0 8px 8px 0; color: var(--muted);
+  overflow-wrap: anywhere;
+}
+.skip-tag {
+  font-size: 12px; text-transform: uppercase; letter-spacing: .06em;
+  color: var(--muted); border: 1px solid var(--border); border-radius: 5px; padding: 1px 6px; margin-right: 6px;
+}
+
+/* stats */
+.stat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 10px; margin: 16px 0; }
+.stat { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 14px 16px; }
+.stat b { display: block; font-size: 26px; line-height: 1.2; color: var(--accent); font-variant-numeric: tabular-nums; }
+.stat span { color: var(--muted); font-size: 14px; }
+
+/* domain bars */
+.bars { display: grid; gap: 12px; margin: 16px 0; }
+.bar-row { display: grid; grid-template-columns: 1fr auto; gap: 4px 12px; align-items: baseline; }
+.bar-row .pct { color: var(--accent); font-weight: 700; font-variant-numeric: tabular-nums; }
+.bar-track { grid-column: 1 / -1; height: 12px; border-radius: 6px; background: var(--surface-2); overflow: hidden; }
+.bar-fill { height: 100%; width: var(--w); border-radius: 6px; background: var(--accent); }
+
+/* flashcards */
+.flashcards { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 12px; margin: 16px 0; }
+.flashcard { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; display: flex; flex-direction: column; overflow: hidden; }
+.flashcard .q { padding: 14px 16px; flex: 1; font-size: 15px; line-height: 1.5; }
+.flashcard .a { padding: 12px 16px; border-top: 1px dashed var(--border); background: var(--accent-soft); color: var(--accent); font-weight: 650; font-size: 15px; }
+.flashcard .lbl { display: block; font: 11px var(--mono); letter-spacing: .1em; color: var(--muted); margin-bottom: 4px; }
+
+/* mnemonic block */
+.mn { display: grid; grid-template-columns: 230px 1fr; gap: 20px; align-items: start; }
+.mn .visual { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 8px; }
+.mn .full p:first-child { margin-top: 0; }
+
+/* copy block */
+.copy-block { position: relative; margin: 12px 0; background: var(--surface); border: 1px solid var(--border); border-radius: 10px; }
+.copy-block pre { margin: 0; padding: 14px 16px; padding-right: 120px; font: 14px/1.6 var(--mono); white-space: pre-wrap; overflow-wrap: anywhere; }
+.copy-btn { position: absolute; top: 8px; right: 8px; font-size: 13px; padding: 4px 10px; }
+.copy-btn.is-copied { border-color: var(--accent); color: var(--accent); }
+.todo-note { color: var(--muted); font-style: italic; }
+
+.link-list { list-style: none; padding: 0 !important; }
+.link-list li { padding: 8px 0; border-bottom: 1px solid var(--border); }
+.link-list small { display: block; color: var(--muted); }
+
+/* slide chrome is hidden in scroll mode */
+.slide-ui { display: none; }
+
+@media (min-width: 1100px) {
+  .layout { display: grid; grid-template-columns: 250px minmax(0, 1fr); gap: 56px; }
+  .toc { position: sticky; top: var(--topbar-h); align-self: start; max-height: calc(100vh - var(--topbar-h)); overflow: auto; padding: 40px 0 24px; }
+}
+@media (max-width: 640px) {
+  body { font-size: 16px; }
+  .topbar { padding: 0 16px; }
+  .layout { padding: 0 16px 72px; }
+  .mn { grid-template-columns: 1fr; }
+  .mn .visual { max-width: 300px; }
+  .anchor { position: static; padding: 0 0 0 8px; opacity: .6; float: right; }
+  .copy-block pre { padding-right: 16px; padding-top: 44px; }
+  h2.group, h2.title { font-size: 24px; }
+}
+
+/* ---------- Slides mode ---------- */
+html.slides-mode, html.slides-mode body { height: 100%; overflow: hidden; }
+html.slides-mode body { background: #06090c; }
+html.slides-mode .topbar,
+html.slides-mode .toc,
+html.slides-mode .scroll-only,
+html.slides-mode .anchor,
+html.slides-mode .full { display: none; }
+html.slides-mode .layout { display: block; max-width: none; padding: 0; }
+html.slides-mode #deck {
+  position: fixed; left: 50%; top: 50%;
+  width: 1920px; height: 1080px; max-width: none;
+  transform: translate(-50%, -50%) scale(var(--scale, 1));
+  background: var(--bg);
+  font-size: 40px; line-height: 1.4;
+  overflow: hidden;
+  cursor: default;
+  user-select: none; -webkit-user-select: none;
+}
+html.slides-mode .slide { display: none; }
+html.slides-mode .slide.is-active {
+  display: flex; flex-direction: column; justify-content: center;
+  position: absolute; inset: 0; padding: 80px 130px 100px;
+  animation: slide-in .25s ease-out;
+}
+@keyframes slide-in { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+html.slides-mode .title {
+  font-size: 76px; line-height: 1.12; margin: 0 0 56px; padding: 0; border: 0; font-weight: 750;
+  letter-spacing: -.01em;
+}
+html.slides-mode .slide[data-kicker]::before {
+  content: attr(data-kicker);
+  display: block; margin-bottom: 18px;
+  font: 600 26px var(--mono); letter-spacing: .14em; text-transform: uppercase; color: var(--accent);
+}
+html.slides-mode .brief { display: block; }
+html.slides-mode .brief ul, html.slides-mode .brief ol { margin: 0; padding-left: 1.2em; }
+html.slides-mode .brief li { margin: .45em 0; }
+html.slides-mode .brief li::marker { color: var(--accent); font-weight: 700; }
+html.slides-mode .brief .muted, html.slides-mode .muted { color: var(--muted); }
+html.slides-mode .brief strong { color: var(--accent); }
+
+html.slides-mode .slide [data-step] { opacity: 0; transform: translateY(14px); transition: opacity .25s, transform .25s; }
+html.slides-mode .slide [data-step].is-shown { opacity: 1; transform: none; }
+
+/* title + Q&A slides */
+html.slides-mode .hero { align-items: flex-start; }
+html.slides-mode .hero .title { font-size: 120px; margin-bottom: 36px; }
+html.slides-mode .hero .title em { font-style: normal; color: var(--accent); }
+html.slides-mode .hero p { margin: 0; font-size: 46px; color: var(--muted); }
+html.slides-mode .hero .who { margin-top: 90px; font-size: 38px; color: var(--text); }
+html.slides-mode .hero.center { align-items: center; text-align: center; }
+
+/* big facts */
+html.slides-mode .big-three { display: grid; grid-template-columns: repeat(3, 1fr); gap: 40px; }
+html.slides-mode .big-three div { background: var(--surface); border: 2px solid var(--border); border-radius: 28px; padding: 44px 40px; }
+html.slides-mode .big-three b { display: block; font-size: 100px; line-height: 1.05; color: var(--accent); margin-bottom: 16px; }
+html.slides-mode .big-three span { font-size: 36px; color: var(--muted); line-height: 1.3; display: block; }
+
+html.slides-mode .stat-grid { grid-template-columns: repeat(3, 1fr); gap: 32px; margin: 0; }
+html.slides-mode .stat { border-radius: 28px; padding: 36px 44px; border-width: 2px; }
+html.slides-mode .stat b { font-size: 96px; line-height: 1.1; }
+html.slides-mode .stat span { font-size: 32px; line-height: 1.3; display: block; }
+
+html.slides-mode .bars { gap: 40px; margin: 0; }
+html.slides-mode .bar-row { font-size: 44px; gap: 14px 24px; }
+html.slides-mode .bar-row .pct { font-size: 56px; }
+html.slides-mode .bar-track { height: 36px; border-radius: 18px; }
+html.slides-mode .bar-fill { border-radius: 18px; }
+
+html.slides-mode .steps { list-style: none; padding: 0; counter-reset: step; display: grid; gap: 14px; }
+html.slides-mode .steps li { counter-increment: step; margin: 0; display: flex; gap: 24px; align-items: baseline; font-size: 38px; }
+html.slides-mode .steps li::before {
+  content: counter(step); flex: none; width: 56px; height: 56px; border-radius: 50%;
+  display: inline-grid; place-items: center; align-self: center;
+  background: var(--accent); color: #111; font: 700 30px var(--mono);
+}
+html.slides-mode .steps li.skip { color: var(--muted); }
+html.slides-mode .steps li.skip::before { background: var(--surface-2); color: var(--muted); content: "✕"; }
+
+html.slides-mode .flashcards { grid-template-columns: repeat(3, 1fr); gap: 32px; margin: 0; }
+html.slides-mode .flashcard { border-radius: 28px; border-width: 2px; min-height: 520px; }
+html.slides-mode .flashcard .q { padding: 40px; font-size: 36px; line-height: 1.35; }
+html.slides-mode .flashcard .a { padding: 32px 40px; font-size: 32px; border-top-width: 2px; min-height: 180px; }
+html.slides-mode .flashcard .lbl { font-size: 20px; margin-bottom: 12px; }
+
+html.slides-mode .tagcloud { display: flex; flex-wrap: wrap; gap: 12px 16px; margin-bottom: 48px; }
+html.slides-mode .tagcloud span { font: 28px var(--mono); color: var(--muted); border: 2px solid var(--border); border-radius: 12px; padding: 4px 16px; opacity: .75; }
+html.slides-mode .tagcloud span.hot { color: #111; background: var(--accent); border-color: var(--accent); opacity: 1; font-weight: 700; }
+html.slides-mode .defs { display: grid; grid-template-columns: 1fr 1fr; gap: 20px 56px; font-size: 36px; }
+html.slides-mode .defs b { font-family: var(--mono); color: var(--accent); }
+
+html.slides-mode .mn { grid-template-columns: 820px 1fr; gap: 72px; align-items: center; }
+html.slides-mode .mn .visual { border-radius: 32px; padding: 24px; border-width: 2px; }
+html.slides-mode .mn .what { font-size: 34px; color: var(--muted); margin: 0 0 32px; }
+html.slides-mode .slide.mnemo .title { margin-bottom: 40px; }
+html.slides-mode .slide.mnemo .title .svc { font-size: 1em; }
+html.slides-mode .quote { font-size: 64px; line-height: 1.25; max-width: 1400px; }
+html.slides-mode .quote strong { color: var(--accent); }
+
+html.slides-mode .chain { display: grid; grid-template-columns: repeat(4, 1fr); gap: 56px; }
+html.slides-mode .chain div { position: relative; background: var(--surface); border: 2px solid var(--border); border-radius: 28px; padding: 36px 32px; font-size: 34px; line-height: 1.3; }
+html.slides-mode .chain div b { display: block; font: 700 26px var(--mono); color: var(--accent); margin-bottom: 14px; letter-spacing: .08em; }
+html.slides-mode .chain div + div::before { content: "→"; position: absolute; left: -46px; top: 50%; transform: translateY(-50%); color: var(--accent); font-size: 40px; }
+html.slides-mode .after-chain { margin-top: 48px; color: var(--muted); font-size: 36px; }
+
+html.slides-mode .topics { display: grid; gap: 28px; }
+html.slides-mode .topics div { display: flex; justify-content: space-between; align-items: center; gap: 32px; background: var(--surface); border: 2px solid var(--border); border-radius: 24px; padding: 30px 40px; font-size: 46px; font-weight: 650; }
+html.slides-mode .topics small { font: 28px var(--mono); color: var(--accent); font-weight: 400; white-space: nowrap; }
+
+html.slides-mode .checklist { list-style: none; padding: 0; display: grid; grid-template-columns: 1fr 1fr; gap: 22px 64px; }
+html.slides-mode .checklist li { margin: 0; display: flex; gap: 20px; align-items: baseline; font-size: 38px; }
+html.slides-mode .checklist li::before { content: "✓"; color: var(--accent); font-weight: 800; flex: none; }
+
+html.slides-mode .link-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 24px 64px; font-size: 36px; }
+html.slides-mode .link-cols a { user-select: text; }
+
+/* slide chrome */
+html.slides-mode .slide-ui { display: block; }
+.slide-progress { position: fixed; left: 0; bottom: 0; height: 4px; width: 100%; background: rgba(255,255,255,.08); z-index: 30; }
+.slide-progress i { display: block; height: 100%; width: 0; background: var(--accent); transition: width .2s; }
+.slide-counter { position: fixed; right: 16px; bottom: 12px; z-index: 30; font: 13px var(--mono); color: var(--muted); }
+.slide-hint { position: fixed; left: 16px; bottom: 12px; z-index: 30; font-size: 12px; color: var(--muted); opacity: .7; }
+.slide-close { position: fixed; right: 12px; top: 12px; z-index: 31; width: 36px; height: 36px; border-radius: 50%; border: 1px solid var(--border); background: var(--surface-2); opacity: .55; line-height: 1; }
+.slide-close:hover { opacity: 1; border-color: var(--accent); }
+.notes-panel {
+  position: fixed; left: 0; right: 0; bottom: 4px; z-index: 29;
+  max-height: 42vh; overflow: auto;
+  background: rgba(24, 32, 41, .97); border-top: 2px solid var(--accent);
+  padding: 14px max(24px, calc((100vw - 60rem) / 2)) 40px;
+  font-size: 16px; line-height: 1.55;
+}
+.notes-panel[hidden] { display: none; }
+.notes-panel .full { display: block !important; }
+.notes-panel .notes-label { font: 11px var(--mono); letter-spacing: .12em; color: var(--accent); margin: 0 0 4px; }
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+}
+
+@media print {
+  :root { --bg: #fff; --surface: #f6f6f6; --surface-2: #ececec; --border: #ccc; --text: #111; --muted: #555; --accent: #b35c00; --accent-soft: #fff3e0; }
+  .topbar, .toc, .slide-ui, .copy-btn, .anchor, .kbd-hint { display: none !important; }
+  .layout { display: block; padding: 0; }
+  #deck { max-width: none; }
+  .flashcard, .stat, .mn, .bar-row { break-inside: avoid; }
+  h2, h3, h4 { break-after: avoid; }
+  a { color: inherit; }
+}
+</style>
+</head>
+<body class="no-js">
+<script>document.body.classList.remove('no-js');</script>
+
+<header class="topbar">
+  <div class="topbar-title"><span>AWS</span> Cloud Practitioner</div>
+  <button class="btn btn-primary js-only" id="start-slides" type="button" title="Режим слайдів (S)">▶ Слайди</button>
+</header>
+
+<div class="layout">
+
+<nav class="toc" aria-label="Зміст">
+  <p class="toc-label">Зміст</p>
+  <ol>
+    <li><a href="#intro">Вступ</a></li>
+    <li><a href="#facts">Факти про екзамен</a>
+      <ol><li><a href="#domains">Домени екзамену</a></li></ol>
+    </li>
+    <li><a href="#prep">Підготовка до екзамену</a>
+      <ol>
+        <li><a href="#strategy">Стратегія та інструменти</a></li>
+        <li><a href="#algorithm">Алгоритм вивчення секції</a></li>
+        <li><a href="#cards">Приклади флеш-карток</a></li>
+        <li><a href="#hardest">Найважче у вивченні</a></li>
+        <li><a href="#mnemonics">Мнемоніка</a>
+          <ol>
+            <li><a href="#kms">KMS</a></li>
+            <li><a href="#polly">Polly</a></li>
+            <li><a href="#sagemaker">SageMaker</a></li>
+            <li><a href="#bedrock">Bedrock</a></li>
+          </ol>
+        </li>
+        <li><a href="#final-check">Фінальна перевірка</a></li>
+        <li><a href="#underrated">Недооцінені теми</a></li>
+      </ol>
+    </li>
+    <li><a href="#exam">Проходження екзамену</a>
+      <ol>
+        <li><a href="#booking">Реєстрація та +30 хвилин</a></li>
+        <li><a href="#workspace">Підготовка робочого місця</a></li>
+        <li><a href="#impressions">Мої враження</a></li>
+      </ol>
+    </li>
+    <li><a href="#materials">Матеріали доповіді</a></li>
+  </ol>
+</nav>
+
+<main id="deck">
+
+  <header class="article-head scroll-only">
+    <h1>Як скласти AWS Cloud Practitioner</h1>
+    <p>Мій досвід підготовки з повного нуля: курс, Claude, Anki та трохи мнемоніки.</p>
+    <p class="kbd-hint js-only">Режим презентації: кнопка «Слайди» або клавіша <kbd>S</kbd></p>
+  </header>
+
+  <!-- 1. Титул -->
+  <section class="slide slides-only hero" id="title">
+    <h1 class="title">Як скласти<br><em>AWS Cloud Practitioner</em></h1>
+    <p>з повного нуля за 3 тижні</p>
+    <p class="who">Sergey Sinitsa</p>
+  </section>
+
+  <!-- 2. Вступ -->
+  <section class="slide" id="intro">
+    <h2 class="title"><a class="anchor" href="#intro" aria-label="Посилання на розділ">#</a>Вступ</h2>
+    <div class="brief">
+      <div class="big-three">
+        <div><b>0</b><span>досвіду з AWS. Знав лише Cognito</span></div>
+        <div><b>3 тижні</b><span>по ~2 години на день, переважно повторення</span></div>
+        <div><b>Легко</b><span>екзамен здався доволі простим</span></div>
+      </div>
+    </div>
+    <div class="full">
+      <ul>
+        <li>До підготовки у мене не було жодного досвіду з AWS. Я не знав жодного сервісу, окрім Cognito, тож готувався з повного нуля</li>
+        <li>Готувався приблизно 3 тижні, десь по 2 години на день. Більшість цього часу займало повторення пройденого</li>
+        <li>В результаті підготовки за алгоритмом, про який розкажу нижче, екзамен здався мені доволі простим і я пройшов його взагалі без проблем</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- 3. Факти -->
+  <section class="slide" id="facts">
+    <h2 class="title"><a class="anchor" href="#facts" aria-label="Посилання на розділ">#</a>Факти про екзамен</h2>
+    <div class="stat-grid">
+      <div class="stat"><b>CLF-C02</b><span>код екзамену</span></div>
+      <div class="stat"><b>65</b><span>питань: 50 оцінюються + 15 ні</span></div>
+      <div class="stat"><b>90 хв</b><span>+30 хв з ESL +30</span></div>
+      <div class="stat"><b>700</b><span>прохідний бал із 1000</span></div>
+      <div class="stat"><b>100 USD</b><span>компанія компенсує, реєстрація з корпоративної пошти</span></div>
+      <div class="stat"><b>3 роки</b><span>дійсний сертифікат</span></div>
+    </div>
+    <div class="full">
+      <ul>
+        <li>Код екзамену - CLF-C02</li>
+        <li>65 питань, з яких 50 оцінюються, а 15 ні (AWS на них обкатує нові питання, і на екзамені вони ніяк не позначені)</li>
+        <li>Два типи питань: multiple choice (1 правильна відповідь із 4) та multiple response (2 або більше правильних із 5 або більше)</li>
+        <li>Тривалість 90 хвилин, плюс ще 30, якщо заздалегідь оформити ESL +30</li>
+        <li>Прохідний бал 700 із 1000</li>
+        <li>Штрафу за вгадування немає, а питання без відповіді рахується як неправильне, тому відповідаємо на все</li>
+        <li>Не треба набирати прохідний бал у кожному домені окремо, рахується лише загальний результат</li>
+        <li>Ціна 100 USD. Наша компанія її компенсує, але обов'язково треба реєструватися на екзамен зі своєю корпоративною поштою</li>
+        <li>Здавати можна онлайн із проктором або в тест-центрі Pearson VUE</li>
+        <li>Української мови немає, тому здаємо англійською. Саме це і дає право на додаткові 30 хвилин</li>
+        <li>Сертифікат дійсний 3 роки</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- 4. Домени -->
+  <section class="slide" id="domains" data-kicker="Факти про екзамен">
+    <h3 class="title"><a class="anchor" href="#domains" aria-label="Посилання на розділ">#</a>Домени екзамену</h3>
+    <div class="bars">
+      <div class="bar-row"><span>Cloud Technology and Services</span><span class="pct">34%</span><div class="bar-track"><div class="bar-fill" style="--w:100%"></div></div></div>
+      <div class="bar-row"><span>Security and Compliance</span><span class="pct">30%</span><div class="bar-track"><div class="bar-fill" style="--w:88.2%"></div></div></div>
+      <div class="bar-row"><span>Cloud Concepts</span><span class="pct">24%</span><div class="bar-track"><div class="bar-fill" style="--w:70.6%"></div></div></div>
+      <div class="bar-row"><span>Billing, Pricing, and Support</span><span class="pct">12%</span><div class="bar-track"><div class="bar-fill" style="--w:35.3%"></div></div></div>
+    </div>
+    <div class="full">
+      <blockquote>Джерела: <a href="https://aws.amazon.com/certification/certified-cloud-practitioner/">сторінка сертифікації</a>, <a href="https://d1.awsstatic.com/training-and-certification/docs-cloud-practitioner/AWS-Certified-Cloud-Practitioner_Exam-Guide.pdf">офіційний Exam Guide (PDF)</a></blockquote>
+    </div>
+  </section>
+
+  <h2 class="group scroll-only" id="prep">Підготовка до екзамену</h2>
+
+  <!-- 5. Стратегія -->
+  <section class="slide" id="strategy" data-kicker="Підготовка">
+    <h3 class="title"><a class="anchor" href="#strategy" aria-label="Посилання на розділ">#</a>Стратегія та інструменти</h3>
+    <div class="brief">
+      <ul>
+        <li>Ціль одна: <strong>скласти екзамен</strong>, а не навчитися працювати з консоллю</li>
+        <li>Основа: курс <a href="https://www.udemy.com/course/aws-certified-cloud-practitioner-new/">Stephane Maarek на Udemy</a></li>
+        <li>Кастомний проєкт у <strong>Claude</strong>: розбір секції та флеш-картки</li>
+        <li><strong>Anki</strong>: повторення карток</li>
+      </ul>
+    </div>
+    <div class="full">
+      <ul>
+        <li>По-перше, у мене був нульовий досвід роботи з консоллю AWS і не було потреби отримувати практичні навички для роботи, тому стратегія була зосереджена виключно на проходженні екзамену</li>
+        <li>Як основний матеріал підготовки я використовував курс на Udemy від Stephane Maarek
+          <blockquote><a href="https://www.udemy.com/course/aws-certified-cloud-practitioner-new/">https://www.udemy.com/course/aws-certified-cloud-practitioner-new/</a></blockquote>
+        </li>
+        <li>Як допоміжні, але не менш важливі інструменти, я використовував кастомно налаштований проєкт у Claude та Anki для повторення матеріалу у вигляді флеш-карток (інструкція до проєкту є в <a href="#materials">матеріалах доповіді</a>)</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- 6. Алгоритм -->
+  <section class="slide" id="algorithm" data-kicker="Підготовка">
+    <h3 class="title"><a class="anchor" href="#algorithm" aria-label="Посилання на розділ">#</a>Алгоритм вивчення кожної секції курсу</h3>
+    <div class="brief">
+      <ol class="steps">
+        <li data-step>Дивимося секцію курсу повністю</li>
+        <li data-step class="skip">Hands-on відео з консоллю пропускаємо</li>
+        <li data-step>Обов'язково проходимо квіз</li>
+        <li data-step class="skip">Role play пропускаємо</li>
+        <li data-step>Назва секції → промпт у новому діалозі проєкту Claude</li>
+        <li data-step>Claude ще раз розбирає матеріал і генерує флеш-картки</li>
+        <li data-step>Імпортуємо картки в Anki та вчимо</li>
+        <li data-step>Повторюємо для кожної секції до кінця курсу</li>
+      </ol>
+    </div>
+    <div class="full">
+      <ol>
+        <li>Дивимося секцію відеокурсу повністю</li>
+        <li><span class="skip-tag">пропуск</span>Пропускаємо hands-on відео, де показують роботу з веб-консоллю AWS по щойно пройденому матеріалу</li>
+        <li>Після закінчення секції обов'язково проходимо квіз</li>
+        <li><span class="skip-tag">пропуск</span>Пропускаємо Role play, користі від нього майже ніякої</li>
+        <li>Далі копіюємо назву секції із браузера, наприклад "Section 5: EC2 - Elastic Compute Cloud", і використовуємо її як промпт для нового діалогу в проєкті Claude</li>
+        <li>Claude генерує текст, де ще раз розбирає пройдений матеріал із відео, а також, що головне, генерує набір флеш-карток для закріплення матеріалу секції</li>
+        <li>Далі імпортуємо флеш-картки в Anki та закріплюємо матеріал. Якщо не розуміємо картку, читаємо відповідний матеріал, згенерований у Claude</li>
+        <li>Повторюємо для кожної секції до кінця курсу</li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- 7. Картки -->
+  <section class="slide" id="cards" data-kicker="Підготовка">
+    <h3 class="title"><a class="anchor" href="#cards" aria-label="Посилання на розділ">#</a>Приклади флеш-карток</h3>
+    <div class="flashcards">
+      <div class="flashcard">
+        <div class="q"><span class="lbl">Q</span>What durability does every S3 storage class provide?</div>
+        <div class="a" data-step><span class="lbl">A</span>99.999999999% (11 nines)</div>
+      </div>
+      <div class="flashcard">
+        <div class="q"><span class="lbl">Q</span>Which managed in-memory caching service is compatible with Redis and Memcached?</div>
+        <div class="a" data-step><span class="lbl">A</span>Amazon ElastiCache</div>
+      </div>
+      <div class="flashcard">
+        <div class="q"><span class="lbl">Q</span>A data science team needs one fully managed service to build, train, and deploy custom ML models. Which service?</div>
+        <div class="a" data-step><span class="lbl">A</span>Amazon SageMaker (now SageMaker AI)</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 8. Найважче -->
+  <section class="slide" id="hardest" data-kicker="Підготовка">
+    <h3 class="title"><a class="anchor" href="#hardest" aria-label="Посилання на розділ">#</a>Найважче у вивченні</h3>
+    <div class="brief">
+      <div class="tagcloud" aria-hidden="true">
+        <span>EC2</span><span>S3</span><span>RDS</span><span>Lambda</span><span>IAM</span><span class="hot">KMS</span><span>VPC</span><span>CloudFront</span><span>Route 53</span><span>DynamoDB</span><span>ElastiCache</span><span class="hot">Polly</span><span>Redshift</span><span>Athena</span><span>Glue</span><span>Kinesis</span><span>SQS</span><span>SNS</span><span>CloudWatch</span><span>CloudTrail</span><span class="hot">SageMaker</span><span>Config</span><span>GuardDuty</span><span>Inspector</span><span>Macie</span><span>Shield</span><span>WAF</span><span>Cognito</span><span class="hot">Bedrock</span><span>Snowball</span><span>Lightsail</span><span>Fargate</span><span>Beanstalk</span><span>Rekognition</span><span>Lex</span><span>Comprehend</span><span>Textract</span><span>Kendra</span><span>…</span>
+      </div>
+      <div class="defs">
+        <div><b>KMS</b> - ключі шифрування</div>
+        <div><b>Polly</b> - озвучення тексту</div>
+        <div><b>SageMaker</b> - тренування власних моделей</div>
+        <div><b>Bedrock</b> - додатки на готових моделях</div>
+      </div>
+    </div>
+    <div class="full">
+      <p>Найважче у вивченні матеріалу те, що він дуже абстрактний і в ньому купа назв сервісів та інструментів, які погано запам'ятовуються. Наприклад:</p>
+      <ul>
+        <li><span class="svc">KMS</span> - сервіс для зберігання ключів шифрування</li>
+        <li><span class="svc">Polly</span> - сервіс для озвучення тексту натуральним голосом</li>
+        <li><span class="svc">SageMaker</span> - сервіс для тренування власних моделей ШІ</li>
+        <li><span class="svc">Bedrock</span> - сервіс для створення додатків, що використовують готові базові ШІ-моделі від Open AI, Anthropic, Grok і так далі</li>
+        <li>І таких прикладів дуже і дуже багато</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- 9. Мнемоніка -->
+  <section class="slide" id="mnemonics" data-kicker="Підготовка">
+    <h3 class="title"><a class="anchor" href="#mnemonics" aria-label="Посилання на розділ">#</a>Мнемоніка</h3>
+    <div class="brief">
+      <p class="quote">Зв'язуємо <strong>назву</strong> сервісу та його <strong>значення</strong> через яскравий образ в уяві</p>
+    </div>
+    <div class="full">
+      <p>Щоб простіше запам'ятовувати такі речі, я використовував простий мнемонічний прийом: в уяві зв'язував назву та значення сервісу через образ. Приклади:</p>
+    </div>
+  </section>
+
+  <!-- 10. KMS -->
+  <section class="slide mnemo" id="kms" data-kicker="Мнемоніка">
+    <h4 class="title"><a class="anchor" href="#kms" aria-label="Посилання на розділ">#</a><span class="svc">KMS</span></h4>
+    <div class="mn">
+      <div class="visual">
+        <svg class="illo" viewBox="0 0 400 300" role="img" aria-labelledby="illo-kms-t">
+          <title id="illo-kms-t">Штангіст на помості жме над головою велетенський піксельний ключ</title>
+          <defs>
+            <pattern id="pxgrid" width="12" height="12" patternUnits="userSpaceOnUse" x="68" y="24">
+              <path class="px-grid" d="M12 0H0V12"/>
+            </pattern>
+          </defs>
+          <!-- pixel key: bow, shaft, teeth on a 12px grid -->
+          <g class="f-acc" shape-rendering="crispEdges">
+            <rect x="80" y="24" width="36" height="12"/>
+            <rect x="80" y="72" width="36" height="12"/>
+            <rect x="68" y="36" width="12" height="36"/>
+            <rect x="116" y="36" width="12" height="36"/>
+            <rect x="128" y="48" width="204" height="12"/>
+            <rect x="260" y="60" width="12" height="24"/>
+            <rect x="284" y="60" width="12" height="12"/>
+            <rect x="308" y="60" width="12" height="24"/>
+          </g>
+          <rect x="68" y="24" width="264" height="60" fill="url(#pxgrid)"/>
+          <!-- effort marks -->
+          <path class="ln-acc" d="M150 118l-14-8M146 136h-16M250 118l14-8M254 136h16"/>
+          <!-- lifter -->
+          <path class="ln" d="M183 158L150 116 160 66M217 158l33-42-10-50"/>
+          <circle class="f-text" cx="160" cy="62" r="7"/>
+          <circle class="f-text" cx="240" cy="62" r="7"/>
+          <rect class="f-surf" x="178" y="148" width="44" height="70" rx="14"/>
+          <circle class="f-surf" cx="200" cy="124" r="18"/>
+          <path class="ln-thin" d="M193 130q7 5 14 0"/>
+          <path class="ln" d="M188 216l-24 26 6 26M212 216l24 26-6 26M170 268h-14M230 268h14"/>
+          <!-- platform -->
+          <rect class="f-surf" x="84" y="270" width="232" height="18" rx="4"/>
+          <text x="200" y="284" text-anchor="middle" font-size="12" class="mono muted">КМС</text>
+        </svg>
+      </div>
+      <div class="text">
+        <div class="brief">
+          <p class="what">Key Management Service - ключі шифрування</p>
+          <ul>
+            <li data-step>KMS = <strong>Кандидат у Майстри Спорту</strong></li>
+            <li data-step>Замість штанги жме велетенський важкий <strong>ключ</strong></li>
+            <li data-step>Ключ <strong>пікселізований</strong>, як у майнкрафті = шифрування</li>
+          </ul>
+        </div>
+        <div class="full">
+          <p>Абревіатура KMS у мене асоціюється із Кандидатом у Майстри Спорту. Тому, щоб запам'ятати, що це про ключі шифрування, я придумав образ, де Кандидат у Майстри Спорту по жиму штанги на змаганнях жме замість штанги велетенський важкий ключ, причому пікселізований, ніби в майнкрафті, що символізує шифрування</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 11. Polly -->
+  <section class="slide mnemo" id="polly" data-kicker="Мнемоніка">
+    <h4 class="title"><a class="anchor" href="#polly" aria-label="Посилання на розділ">#</a><span class="svc">Polly</span></h4>
+    <div class="mn">
+      <div class="visual">
+        <svg class="illo" viewBox="0 0 400 300" role="img" aria-labelledby="illo-polly-t">
+          <title id="illo-polly-t">Папуга на жердці дивиться на великий крекер і каже «Polly wants a cracker»</title>
+          <!-- speech bubble -->
+          <path class="f-surf" d="M150 22h216a14 14 0 0 1 14 14v36a14 14 0 0 1-14 14H214l-22 22 4-22h-46a14 14 0 0 1-14-14V36a14 14 0 0 1 14-14z"/>
+          <text x="258" y="61" text-anchor="middle" font-size="17">Polly wants a cracker</text>
+          <!-- sound waves -->
+          <path class="ln-acc" d="M196 128q10 10 0 22M208 120q18 18 0 38M220 112q26 26 0 54"/>
+          <!-- perch -->
+          <path class="ln" d="M40 244h190M135 244v44M100 288h70"/>
+          <!-- tail -->
+          <path class="f-acc" d="M96 214l-34 70 22 4 40-62z"/>
+          <!-- body -->
+          <ellipse class="f-acc" cx="126" cy="186" rx="40" ry="58"/>
+          <path class="f-surf" d="M108 160q-22 40 2 78 26-30 12-80z"/>
+          <!-- head -->
+          <circle class="f-acc" cx="140" cy="122" r="30"/>
+          <path class="ln-acc" d="M126 96l-8-18M138 92l-2-20M150 95l6-18"/>
+          <circle class="f-bg" cx="150" cy="116" r="7"/>
+          <circle class="f-text" cx="152" cy="115" r="3"/>
+          <!-- beak -->
+          <path class="f-text" d="M166 112q28 2 20 34-10-12-24-10z"/>
+          <!-- feet -->
+          <path class="ln-thin" d="M116 240v8M136 240v8"/>
+          <!-- cracker -->
+          <g transform="rotate(8 310 210)">
+            <path class="f-surf" style="stroke:var(--accent)" d="M262 162q8-8 16 0 8-8 16 0 8-8 16 0 8-8 16 0 8-8 16 0 8-8 16 0 8 8 0 16 8 8 0 16 8 8 0 16 8 8 0 16 8 8 0 16 8 8 0 16-8 8-16 0-8 8-16 0-8 8-16 0-8 8-16 0-8 8-16 0-8 8-16 0-8-8 0-16-8-8 0-16-8-8 0-16-8-8 0-16-8-8 0-16-8-8 0-16z"/>
+            <g class="f-acc">
+              <circle cx="286" cy="186" r="4"/><circle cx="310" cy="186" r="4"/><circle cx="334" cy="186" r="4"/>
+              <circle cx="286" cy="210" r="4"/><circle cx="310" cy="210" r="4"/><circle cx="334" cy="210" r="4"/>
+              <circle cx="286" cy="234" r="4"/><circle cx="310" cy="234" r="4"/><circle cx="334" cy="234" r="4"/>
+            </g>
+          </g>
+        </svg>
+      </div>
+      <div class="text">
+        <div class="brief">
+          <p class="what">Озвучення тексту натуральним голосом</p>
+          <ul>
+            <li data-step><strong>«Polly wants a cracker»</strong> - рядок із пісні Нірвани</li>
+            <li data-step>Папуга Поллі дивиться на великий смачний крекер</li>
+            <li data-step>І каже цю фразу <strong>красивим натуральним голосом</strong></li>
+          </ul>
+        </div>
+        <div class="full">
+          <p>"Polly wants a cracker" - відомий рядок із пісні Нірвани про папугу, що говорить. Я створив образ, де папуга Поллі, дивлячись на великий смачний крекер, каже цю фразу красивим натуральним голосом</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 12. SageMaker -->
+  <section class="slide mnemo" id="sagemaker" data-kicker="Мнемоніка">
+    <h4 class="title"><a class="anchor" href="#sagemaker" aria-label="Посилання на розділ">#</a><span class="svc">SageMaker</span></h4>
+    <div class="mn">
+      <div class="visual">
+        <svg class="illo" viewBox="0 0 400 300" role="img" aria-labelledby="illo-sage-t">
+          <title id="illo-sage-t">Серверна стійка, у якій замість відеокарт стоять ігрові приставки з геймпадами</title>
+          <!-- rack -->
+          <rect class="f-surf" x="110" y="18" width="180" height="264" rx="10"/>
+          <text x="200" y="40" text-anchor="middle" font-size="11" class="mono muted">TRAINING… 16-BIT</text>
+          <rect class="f-bg" x="130" y="48" width="140" height="6" rx="3"/>
+          <rect class="f-acc" x="130" y="48" width="92" height="6" rx="3"/>
+          <!-- console slots -->
+          <g id="console-1">
+            <rect class="f-bg" x="124" y="66" width="152" height="60" rx="6"/>
+            <path class="f-surf" d="M136 116h128l-8-30H144z"/>
+            <rect class="f-acc" x="170" y="78" width="60" height="10" rx="2"/>
+            <circle class="f-acc" cx="150" cy="108" r="3"/>
+            <path class="ln-thin" d="M236 106h16"/>
+          </g>
+          <use href="#console-1" y="70"/>
+          <use href="#console-1" y="140"/>
+          <!-- wires -->
+          <path class="ln-muted" d="M276 100q30 0 36-20M124 170q-30 0-36-20M276 240q30 0 36-20"/>
+          <!-- gamepads -->
+          <g id="pad">
+            <rect class="f-surf" x="300" y="48" width="84" height="38" rx="19"/>
+            <path class="ln-thin" d="M318 60v14M311 67h14"/>
+            <circle class="f-acc" cx="352" cy="72" r="4"/><circle class="f-acc" cx="363" cy="64" r="4"/><circle class="f-acc" cx="374" cy="72" r="4"/>
+          </g>
+          <use href="#pad" x="-284" y="70"/>
+          <use href="#pad" y="140"/>
+        </svg>
+      </div>
+      <div class="text">
+        <div class="brief">
+          <p class="what">Тренування та деплой власних моделей ШІ</p>
+          <ul>
+            <li data-step>SageMaker → <strong>Sega</strong>-maker</li>
+            <li data-step>В офісі тренують моделі</li>
+            <li data-step>Але замість відеокарт стоять <strong>приставки Sega</strong></li>
+          </ul>
+        </div>
+        <div class="full">
+          <p>SageMaker - образ, де в офісі для тренування моделей замість відеокарт використовуються приставки Sega</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 13. Bedrock -->
+  <section class="slide mnemo" id="bedrock" data-kicker="Мнемоніка">
+    <h4 class="title"><a class="anchor" href="#bedrock" aria-label="Посилання на розділ">#</a><span class="svc">Bedrock</span></h4>
+    <div class="mn">
+      <div class="visual">
+        <svg class="illo" viewBox="0 28 400 272" role="img" aria-labelledby="illo-bed-t">
+          <title id="illo-bed-t">Кам'яне ліжко, на якому сидять три постаті з ноутбуками: Сем, Даріо та Ілон</title>
+          <!-- headboard -->
+          <path class="f-stone" d="M30 110q-4-40 28-44 30-2 30 40v122H30z"/>
+          <path class="ln-muted" d="M44 96l12 18-8 14M70 150l-10 16"/>
+          <!-- footboard -->
+          <path class="f-stone" d="M338 176q2-24 22-22 16 2 14 26v48h-36z"/>
+          <!-- legs -->
+          <path class="f-stone" d="M52 256q0-18 26-18t26 18v26H52zM300 256q0-18 26-18t26 18v26h-52z"/>
+          <!-- figures -->
+          <g id="person">
+            <circle class="f-surf" cx="120" cy="124" r="17"/>
+            <path class="f-surf" d="M96 204v-34q0-24 24-24t24 24v34z"/>
+            <path class="f-acc" d="M98 176h44l4 26H94z"/>
+            <circle class="f-bg" cx="120" cy="189" r="4"/>
+          </g>
+          <use href="#person" x="86"/>
+          <use href="#person" x="172"/>
+          <!-- mattress slab -->
+          <path class="f-stone" d="M26 204q-2-8 10-8h332q10 0 8 10l-4 36q-2 8-10 8H40q-8 0-10-8z"/>
+          <path class="ln-muted" d="M90 204l14 16-6 14M210 204l-10 18 12 12M300 250l-8-16"/>
+          <!-- names -->
+          <text x="120" y="92" text-anchor="middle" font-size="17">Сем</text>
+          <text x="206" y="92" text-anchor="middle" font-size="17">Даріо</text>
+          <text x="292" y="92" text-anchor="middle" font-size="17">Ілон</text>
+        </svg>
+      </div>
+      <div class="text">
+        <div class="brief">
+          <p class="what">Додатки на базі готових foundation-моделей</p>
+          <ul>
+            <li data-step>Bed + rock = <strong>кам'яне ліжко</strong></li>
+            <li data-step>На ньому з ноутбуками сидять Сем Альтман, Даріо та Ілон</li>
+            <li data-step>І пишуть додаток <strong>на базі своїх моделей</strong></li>
+          </ul>
+        </div>
+        <div class="full">
+          <p>Bedrock - образ, де на кам'яному ліжку сидять з ноутбуками Сем Альтман, Даріо та Ілон і пишуть додаток на базі своїх моделей</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 14. Фінальна перевірка -->
+  <section class="slide" id="final-check" data-kicker="Підготовка">
+    <h3 class="title"><a class="anchor" href="#final-check" aria-label="Посилання на розділ">#</a>Фінальна перевірка перед екзаменом</h3>
+    <div class="brief">
+      <div class="chain">
+        <div data-step><b>01</b>Пробний екзамен у кінці курсу Маарека</div>
+        <div data-step><b>02</b>Список помилок копіюємо і віддаємо Клоду</div>
+        <div data-step><b>03</b>Нові картки на слабкі теми → Anki</div>
+        <div data-step><b>04</b>Екзамен на 100 питань від Клода + вердикт</div>
+      </div>
+      <p class="after-chain" data-step>Пробний, скоріш за все, здасться складним. Не лякаємося</p>
+    </div>
+    <div class="full">
+      <ul>
+        <li>Після проходження всіх тем обов'язково треба пройти тестовий екзамен у кінці курсу Маарека. Скоріш за все, він здасться доволі складним. Не лякаємося, а копіюємо список неправильних відповідей із відповідної вкладки і віддаємо Клоду, щоб він зробив додаткові флеш-картки на наші слабкі теми. Вивчаємо їх через Anki</li>
+        <li>Далі я попросив Клода провести мені тестовий екзамен із 100 питань і дати вердикт, чи готовий я до справжнього екзамену</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- 15. Недооцінені теми -->
+  <section class="slide" id="underrated" data-kicker="Підготовка">
+    <h3 class="title"><a class="anchor" href="#underrated" aria-label="Посилання на розділ">#</a>Теми, які здавалися мені не особливо важливими, але виявилися важливими для екзамену</h3>
+    <div class="brief">
+      <div class="topics">
+        <div>Shared Responsibility Model <small>Security and Compliance · 30%</small></div>
+        <div>Cloud Adoption Framework <small>Cloud Concepts · 24% · нове в C02</small></div>
+        <div>Well-Architected Framework <small>Cloud Concepts · 24%</small></div>
+      </div>
+    </div>
+    <div class="full">
+      <ul>
+        <li>Shared Responsibility Model. В офіційному Exam Guide це окремий пункт у домені Security and Compliance (30%)</li>
+        <li>Cloud Adoption Framework. Пункт у домені Cloud Concepts (24%), причому це нова тема саме у версії CLF-C02</li>
+        <li>Well-Architected Framework. Теж окремий пункт у домені Cloud Concepts (24%)</li>
+      </ul>
+    </div>
+  </section>
+
+  <h2 class="group scroll-only" id="exam">Проходження екзамену</h2>
+
+  <!-- 16. Реєстрація -->
+  <section class="slide" id="booking" data-kicker="Екзамен">
+    <h3 class="title"><a class="anchor" href="#booking" aria-label="Посилання на розділ">#</a>Реєстрація та додаткові 30 хвилин</h3>
+    <div class="brief">
+      <ul>
+        <li>Подивіться секцію курсу Маарека про проходження екзамену</li>
+        <li><strong>ESL +30</strong> оформлюємо <strong>до</strong> реєстрації. Один раз і на всі екзамени AWS</li>
+        <li>Забукати можна <strong>день у день</strong>, слотів вистачає</li>
+        <li>Обирайте день, коли добре виспалися</li>
+      </ul>
+    </div>
+    <div class="full">
+      <ul>
+        <li>Обов'язково подивіться секцію курсу Маарека про проходження екзамену, де він розповідає, як зареєструватися, як підготувати місце та отримати додаткові 30 хвилин</li>
+        <li>Додаткові 30 хвилин (ESL +30) треба оформити <strong>до</strong> реєстрації на екзамен. Оформлюється один раз і діє для всіх наступних екзаменів AWS
+          <div class="copy-block">
+            <pre>aws.training/Certification → Go to your Account → Request Exam Accommodations → Request Accommodation → ESL +30 MINUTES</pre>
+            <button class="btn copy-btn js-only" type="button">Скопіювати</button>
+          </div>
+        </li>
+        <li>Екзамен можна забукати день у день, вільних слотів вистачає. Тому можна не букати завчасно, а вибрати день, коли ви добре виспалися та готові</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- 17. Робоче місце -->
+  <section class="slide" id="workspace" data-kicker="Екзамен">
+    <h3 class="title"><a class="anchor" href="#workspace" aria-label="Посилання на розділ">#</a>Підготовка робочого місця</h3>
+    <div class="brief">
+      <ul class="checklist">
+        <li>System Test заздалегідь</li>
+        <li>Чек-ін за 30 хвилин до початку</li>
+        <li>Документ із фото, ім'я як у реєстрації</li>
+        <li>Фото себе, документа, кімната на 360°</li>
+        <li>Порожній стіл, лише напій без етикеток</li>
+        <li>Один екран</li>
+        <li>Без телефона, навушників, годинника</li>
+        <li>Самі в кімнаті, весь час у кадрі</li>
+        <li>Мікрофон і динаміки працюють</li>
+        <li>Проктор не ставить екзамен на паузу</li>
+      </ul>
+    </div>
+    <div class="full">
+      <p>Онлайн-екзамен проходить через Pearson OnVUE.</p>
+      <ul>
+        <li>Заздалегідь пройдіть System Test на тому самому комп'ютері і в тій самій мережі, з яких будете здавати</li>
+        <li>Чек-ін починається за 30 хвилин до призначеного часу, тож не варто заходити в останню хвилину</li>
+        <li>Треба мати при собі дійсний державний документ із фото. Ім'я в документі має точно збігатися з іменем у реєстрації на екзамен</li>
+        <li>Під час чек-іну треба сфотографувати себе, документ і показати кімнату на 360°</li>
+        <li>Стіл має бути повністю порожнім, дозволені лише комп'ютер та напій у ємності без написів та етикеток. Ніяких книжок, нотаток, паперу, ручок, сумок, гаманців</li>
+        <li>Екран має бути лише один, додаткові монітори треба від'єднати</li>
+        <li>Телефон, планшет, навушники та годинник треба прибрати</li>
+        <li>Увесь час екзамену в кімнаті треба бути на самоті, і ніхто не має бачити ваш екран, тому попередьте домашніх</li>
+        <li>Не можна виходити з поля зору вебкамери</li>
+        <li>Спілкування з проктором англійською. Офіційно для цього є чат в екзамені, але зі мною проктор говорила голосом, тому мікрофон і динаміки мають працювати. Проктор не може поставити екзамен на паузу чи полагодити вам інтернет</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- 18. Враження -->
+  <section class="slide" id="impressions" data-kicker="Екзамен">
+    <h3 class="title"><a class="anchor" href="#impressions" aria-label="Посилання на розділ">#</a>Мої враження</h3>
+    <div class="brief">
+      <div class="big-three">
+        <div data-step><b>Акцент</b><span>проктор з індійським акцентом, на слух розуміти непросто</span></div>
+        <div data-step><b>40 хв</b><span>вистачило навіть без додаткових 30 хвилин</span></div>
+        <div data-step><b>Простіше</b><span>ніж пробний екзамен Маарека</span></div>
+      </div>
+    </div>
+    <div class="full">
+      <ul>
+        <li>Проктором у мене була жінка з індійським акцентом, тож будьте готові, що розуміти проктора на слух може бути непросто</li>
+        <li>Я вклався у 40 хвилин, тобто часу більш ніж достатньо навіть без додаткових 30 хвилин</li>
+        <li>Питання у пробному екзамені Маарека здалися мені складнішими, ніж на реальному екзамені</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- 19. Матеріали -->
+  <section class="slide" id="materials">
+    <h2 class="title"><a class="anchor" href="#materials" aria-label="Посилання на розділ">#</a>Матеріали доповіді</h2>
+    <div class="brief">
+      <div class="link-cols">
+        <div>Курс <a href="https://www.udemy.com/course/aws-certified-cloud-practitioner-new/">Stephane Maarek на Udemy</a></div>
+        <div><a href="https://apps.ankiweb.net/">Anki</a> для флеш-карток</div>
+        <div>Офіційний <a href="https://d1.awsstatic.com/training-and-certification/docs-cloud-practitioner/AWS-Certified-Cloud-Practitioner_Exam-Guide.pdf">Exam Guide</a></div>
+        <div><a href="https://aws.amazon.com/certification/policies/before-testing/">ESL +30</a> та <a href="https://www.pearsonvue.com/us/en/aws/onvue.html">правила OnVUE</a></div>
+      </div>
+      <p class="after-chain">Інструкція до проєкту Claude та всі деталі є на цій сторінці, посилання надішлю після доповіді</p>
+    </div>
+    <div class="full">
+      <ul class="link-list">
+        <li><a href="https://www.udemy.com/course/aws-certified-cloud-practitioner-new/">Курс Stephane Maarek на Udemy</a><small>Основний матеріал підготовки</small></li>
+        <li><a href="https://apps.ankiweb.net/">Anki</a><small>Флеш-картки з інтервальним повторенням</small></li>
+        <li><a href="https://aws.amazon.com/certification/certified-cloud-practitioner/">Сторінка сертифікації AWS Certified Cloud Practitioner</a><small>Реєстрація, ціна, мови</small></li>
+        <li><a href="https://d1.awsstatic.com/training-and-certification/docs-cloud-practitioner/AWS-Certified-Cloud-Practitioner_Exam-Guide.pdf">Офіційний Exam Guide (PDF)</a><small>Домени, теми, список сервісів у межах екзамену</small></li>
+        <li><a href="https://aws.amazon.com/certification/policies/before-testing/">AWS: Before testing</a><small>Як оформити ESL +30</small></li>
+        <li><a href="https://www.pearsonvue.com/us/en/aws/onvue.html">Pearson OnVUE для AWS</a><small>System Test та вимоги до робочого місця</small></li>
+      </ul>
+      <h3 class="title" style="margin-top:28px">Інструкція до проєкту Claude</h3>
+      <div class="copy-block">
+        <pre id="claude-prompt" class="todo-note">Інструкція буде додана пізніше.</pre>
+      </div>
+    </div>
+  </section>
+
+  <!-- 20. Питання -->
+  <section class="slide slides-only hero center" id="qa">
+    <h2 class="title"><em>Питання?</em></h2>
+    <p>Дякую за увагу</p>
+  </section>
+
+</main>
+</div>
+
+<div class="slide-ui" aria-hidden="true">
+  <button class="slide-close" id="exit-slides" type="button" title="Вийти зі слайдів (Esc)">✕</button>
+  <div class="slide-hint">← → гортати · N нотатки · F повний екран · Esc вийти</div>
+  <div class="slide-counter" id="slide-counter"></div>
+  <div class="slide-progress"><i id="slide-progress"></i></div>
+</div>
+<div class="notes-panel" id="notes" hidden></div>
+
+<script>
+(function () {
+  'use strict';
+  var root = document.documentElement;
+  var deck = document.getElementById('deck');
+  var slides = Array.prototype.slice.call(deck.querySelectorAll('.slide'));
+  var notes = document.getElementById('notes');
+  var counter = document.getElementById('slide-counter');
+  var progress = document.getElementById('slide-progress');
+  var tocLinks = Array.prototype.slice.call(document.querySelectorAll('.toc a'));
+  var idx = 0;
+  var currentId = null; // section currently in view in scroll mode
+  var notesOn = false;
+
+  function inSlides() { return root.classList.contains('slides-mode'); }
+  function indexOfId(id) {
+    for (var i = 0; i < slides.length; i++) if (slides[i].id === id) return i;
+    return -1;
+  }
+  function stepsOf(slide) {
+    return Array.prototype.slice.call(slide.querySelectorAll('[data-step]'));
+  }
+
+  /* ----- persistence of mode in URL (falls back to sessionStorage on file://) ----- */
+  function remember(on) {
+    try { sessionStorage.setItem('slidesMode', on ? '1' : ''); } catch (e) {}
+  }
+  function remembered() {
+    try { return sessionStorage.getItem('slidesMode') === '1'; } catch (e) { return false; }
+  }
+  function setUrl(on, id) {
+    var hash = id ? '#' + id : '';
+    try {
+      history.replaceState(null, '', location.pathname + (on ? '?slides' : '') + hash);
+    } catch (e) {
+      try { history.replaceState(null, '', hash || '#'); } catch (e2) {}
+    }
+  }
+
+  /* ----- slides ----- */
+  function fit() {
+    var s = Math.min(window.innerWidth / 1920, window.innerHeight / 1080);
+    root.style.setProperty('--scale', s);
+  }
+  function renderNotes() {
+    if (!notesOn || !inSlides()) { notes.hidden = true; return; }
+    var parts = slides[idx].querySelectorAll('.full');
+    var html = '<p class="notes-label">НОТАТКИ</p>';
+    for (var i = 0; i < parts.length; i++) html += parts[i].outerHTML;
+    if (!parts.length) html += '<p class="todo-note">Для цього слайда нотаток немає</p>';
+    notes.innerHTML = html;
+    notes.hidden = false;
+    notes.scrollTop = 0;
+  }
+  function show(i, fromBack) {
+    idx = Math.max(0, Math.min(slides.length - 1, i));
+    slides.forEach(function (s, n) { s.classList.toggle('is-active', n === idx); });
+    stepsOf(slides[idx]).forEach(function (el) { el.classList.toggle('is-shown', !!fromBack); });
+    counter.textContent = (idx + 1) + ' / ' + slides.length;
+    progress.style.width = ((idx + 1) / slides.length * 100) + '%';
+    setUrl(true, slides[idx].id);
+    renderNotes();
+  }
+  function next() {
+    var pending = stepsOf(slides[idx]).filter(function (el) { return !el.classList.contains('is-shown'); });
+    if (pending.length) pending[0].classList.add('is-shown');
+    else if (idx < slides.length - 1) show(idx + 1, false);
+  }
+  function prev() {
+    var shown = stepsOf(slides[idx]).filter(function (el) { return el.classList.contains('is-shown'); });
+    if (shown.length) shown[shown.length - 1].classList.remove('is-shown');
+    else if (idx > 0) show(idx - 1, true);
+  }
+  function enterSlides(id) {
+    var i = id ? indexOfId(id) : -1;
+    if (i < 0) i = (window.scrollY < 120 || !currentId) ? 0 : indexOfId(currentId);
+    root.classList.add('slides-mode');
+    remember(true);
+    fit();
+    show(Math.max(i, 0), false);
+  }
+  function exitSlides() {
+    var slide = slides[idx];
+    root.classList.remove('slides-mode');
+    remember(false);
+    notes.hidden = true;
+    slides.forEach(function (s) { s.classList.remove('is-active'); });
+    if (document.fullscreenElement && document.exitFullscreen) document.exitFullscreen();
+    var target = slide.classList.contains('slides-only')
+      ? (slide.id === 'qa' ? document.getElementById('materials') : null)
+      : slide;
+    setUrl(false, target ? target.id : '');
+    if (target) target.scrollIntoView({ block: 'start', behavior: 'instant' });
+    else window.scrollTo(0, 0);
+  }
+  function toggleFullscreen() {
+    if (document.fullscreenElement) document.exitFullscreen();
+    else if (root.requestFullscreen) root.requestFullscreen().catch(function () {});
+  }
+
+  document.getElementById('start-slides').addEventListener('click', function () { enterSlides(); });
+  document.getElementById('exit-slides').addEventListener('click', exitSlides);
+  window.addEventListener('resize', fit);
+
+  document.addEventListener('keydown', function (e) {
+    if (e.metaKey || e.ctrlKey || e.altKey) return;
+    var k = e.key;
+    if (k === 's' || k === 'S' || k === 'і' || k === 'І' || k === 'ы' || k === 'Ы') {
+      if (inSlides()) exitSlides(); else enterSlides();
+      e.preventDefault();
+      return;
+    }
+    if (!inSlides()) return;
+    var handled = true;
+    if (k === 'ArrowRight' || k === 'ArrowDown' || k === ' ' || k === 'PageDown' || k === 'Enter') next();
+    else if (k === 'ArrowLeft' || k === 'ArrowUp' || k === 'PageUp' || k === 'Backspace') prev();
+    else if (k === 'Home') show(0, false);
+    else if (k === 'End') show(slides.length - 1, false);
+    else if (k === 'Escape') exitSlides();
+    else if (k === 'f' || k === 'F' || k === 'а' || k === 'А') toggleFullscreen();
+    else if (k === 'n' || k === 'N' || k === 'т' || k === 'Т') { notesOn = !notesOn; renderNotes(); }
+    else handled = false;
+    if (handled) e.preventDefault();
+  });
+
+  deck.addEventListener('click', function (e) {
+    if (!inSlides() || e.target.closest('a, button')) return;
+    next();
+  });
+
+  var touchX = null, touchY = null;
+  deck.addEventListener('touchstart', function (e) {
+    touchX = e.changedTouches[0].clientX; touchY = e.changedTouches[0].clientY;
+  }, { passive: true });
+  deck.addEventListener('touchend', function (e) {
+    if (!inSlides() || touchX === null) return;
+    var dx = e.changedTouches[0].clientX - touchX;
+    var dy = e.changedTouches[0].clientY - touchY;
+    touchX = null;
+    if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy)) { if (dx < 0) next(); else prev(); }
+  }, { passive: true });
+
+  /* ----- scroll mode: current section + TOC highlight ----- */
+  function markCurrent(id) {
+    currentId = id;
+    tocLinks.forEach(function (a) { a.classList.toggle('is-current', a.getAttribute('href') === '#' + id); });
+  }
+  if ('IntersectionObserver' in window) {
+    var io = new IntersectionObserver(function (entries) {
+      if (inSlides()) return;
+      entries.forEach(function (en) { if (en.isIntersecting) markCurrent(en.target.id); });
+    }, { rootMargin: '-15% 0px -75% 0px' });
+    slides.forEach(function (s) { if (!s.classList.contains('slides-only')) io.observe(s); });
+  }
+
+  /* ----- copy helpers ----- */
+  function copyText(text) {
+    if (navigator.clipboard && window.isSecureContext) return navigator.clipboard.writeText(text);
+    return new Promise(function (resolve, reject) {
+      var ta = document.createElement('textarea');
+      ta.value = text; ta.setAttribute('readonly', '');
+      ta.style.cssText = 'position:fixed;top:0;left:0;opacity:0';
+      document.body.appendChild(ta); ta.select();
+      try { document.execCommand('copy') ? resolve() : reject(); } catch (e) { reject(e); }
+      document.body.removeChild(ta);
+    });
+  }
+  function flash(el, label) {
+    var old = el.textContent;
+    el.classList.add('is-copied');
+    if (label) el.textContent = label;
+    setTimeout(function () { el.classList.remove('is-copied'); if (label) el.textContent = old; }, 1400);
+  }
+  document.addEventListener('click', function (e) {
+    var btn = e.target.closest('.copy-btn');
+    if (btn) {
+      var pre = btn.parentNode.querySelector('pre');
+      copyText(pre.textContent.trim()).then(function () { flash(btn, 'Скопійовано'); }, function () {});
+      return;
+    }
+    var anchor = e.target.closest('.anchor');
+    if (anchor) {
+      var url = location.href.split('#')[0].replace(/\?slides$/, '') + anchor.getAttribute('href');
+      copyText(url).then(function () { flash(anchor); }, function () {});
+    }
+  });
+
+  window.addEventListener('hashchange', function () {
+    var i = indexOfId(location.hash.slice(1));
+    if (inSlides() && i >= 0 && i !== idx) show(i, false);
+  });
+
+  /* ----- restore mode on load ----- */
+  if (/[?&]slides\b/.test(location.search) || remembered()) {
+    enterSlides(location.hash.slice(1) || 'title');
+  }
+})();
+</script>
+</body>
+</html>
